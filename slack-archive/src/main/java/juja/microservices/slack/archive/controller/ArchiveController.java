@@ -1,7 +1,7 @@
 package juja.microservices.slack.archive.controller;
 
-import juja.microservices.slack.archive.model.ChannelDTO;
-import juja.microservices.slack.archive.model.MessagesRequest;
+import juja.microservices.slack.archive.model.dto.ChannelDTO;
+import juja.microservices.slack.archive.model.dto.MessagesRequest;
 import juja.microservices.slack.archive.service.ArchiveService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;

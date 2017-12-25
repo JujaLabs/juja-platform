@@ -1,6 +1,6 @@
 package juja.microservices.slack.archive.controller;
 
-import juja.microservices.slack.archive.model.ChannelDTO;
+import juja.microservices.slack.archive.model.dto.ChannelDTO;
 import juja.microservices.slack.archive.service.ArchiveService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
