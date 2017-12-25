@@ -1,9 +1,9 @@
 package juja.microservices.slack.archive.service.impl;
 
-import juja.microservices.slack.archive.model.Channel;
-import juja.microservices.slack.archive.model.ChannelDTO;
-import juja.microservices.slack.archive.model.Message;
-import juja.microservices.slack.archive.model.MessagesRequest;
+import juja.microservices.slack.archive.model.entity.Channel;
+import juja.microservices.slack.archive.model.dto.ChannelDTO;
+import juja.microservices.slack.archive.model.entity.Message;
+import juja.microservices.slack.archive.model.dto.MessagesRequest;
 import juja.microservices.slack.archive.repository.ArchiveRepository;
 import juja.microservices.slack.archive.service.ArchiveService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +25,13 @@ public class ArchiveServiceImpl implements ArchiveService {
     }
 
     @Override
+    public void saveChannels(List<ChannelDTO> channelsDTO) {
+        repository.saveOrUpdateChannels(channelsDTO.stream()
+                .map(channelDTO -> convertChannelDTOToChannel(channelDTO))
+                .collect(Collectors.toList()));
+    }
+
+    @Override
     public List<Message> getMessages(MessagesRequest request) {
         //TODO Should be implemented
         return null;
@@ -41,6 +48,13 @@ public class ArchiveServiceImpl implements ArchiveService {
 
     private ChannelDTO convertChannelToChannelDTO(Channel channel) {
         return new ChannelDTO(channel.getChannelId(), channel.getChannelName());
+    }
+
+    private Channel convertChannelDTOToChannel(ChannelDTO channelDTO){
+        Channel result = new Channel();
+        result.setChannelName(channelDTO.getName());
+        result.setChannelId(channelDTO.getChannelId());
+        return result;
     }
 
     @Override

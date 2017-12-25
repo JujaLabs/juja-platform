@@ -1,7 +1,7 @@
 package juja.microservices.slack.integration;
 
 import com.lordofthejars.nosqlunit.annotation.UsingDataSet;
-import juja.microservices.slack.archive.model.ChannelDTO;
+import juja.microservices.slack.archive.model.dto.ChannelDTO;
 import juja.microservices.slack.archive.repository.impl.ArchiveRepositoryImpl;
 import juja.microservices.slack.archive.service.impl.ArchiveServiceImpl;
 import org.hamcrest.collection.IsIterableContainingInAnyOrder;

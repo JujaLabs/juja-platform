@@ -1,4 +1,4 @@
-package juja.microservices.slack.archive.model;
+package juja.microservices.slack.archive.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
