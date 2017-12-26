@@ -5,12 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
 public class Channel {
+
     @Id
     private String id;
     private String channelId;
@@ -21,8 +19,4 @@ public class Channel {
         this.channelId = channelId;
         this.channelName = channelName;
     }
-
-
-
-
 }

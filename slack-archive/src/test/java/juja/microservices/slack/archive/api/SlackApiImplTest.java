@@ -52,7 +52,7 @@ public class SlackApiImplTest {
        String expectedUrlTemplate = slackApiChannelsUrlTemplate + slackApiToken;
        mockServer.expect(requestTo(expectedUrlTemplate))
                .andExpect(method(HttpMethod.GET))
-               .andRespond(withSuccess(Util.getFile("api/channels.json"), MediaType.APPLICATION_JSON));
+               .andRespond(withSuccess(Util.readStringFromFile("api/channels.json"), MediaType.APPLICATION_JSON));
 
         List<ChannelDTO> result = slackApi.receiveChannelsList();
 

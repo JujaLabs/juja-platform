@@ -9,6 +9,7 @@ import java.util.Date;
 
 @Getter
 public class Message {
+
     @Id
     private String id;
     private String channel;

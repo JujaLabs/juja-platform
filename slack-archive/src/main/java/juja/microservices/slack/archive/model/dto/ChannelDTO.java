@@ -11,12 +11,8 @@ import lombok.*;
         "id",
         "name"
 })
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 @AllArgsConstructor
-@ToString
-@EqualsAndHashCode
 public class ChannelDTO {
     @JsonProperty("id")
     private String channelId;

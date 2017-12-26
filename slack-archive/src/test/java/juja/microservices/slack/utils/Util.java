@@ -6,12 +6,11 @@ import java.io.IOException;
 
 public class Util {
 
-    public static String getFile(String fileName){
+    public static String readStringFromFile(String fileName){
 
         String result = "";
 
         Foo foo = new Foo();
-
         ClassLoader classLoader = foo.getClass().getClassLoader();
         try {
             result = IOUtils.toString(classLoader.getResourceAsStream(fileName));

@@ -7,6 +7,7 @@ import lombok.NonNull;
 
 @Getter
 public class MessagesRequest {
+
     @NonNull
     private String channel;
     @NonNull

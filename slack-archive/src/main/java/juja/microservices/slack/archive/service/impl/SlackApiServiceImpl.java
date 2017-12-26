@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class SlackApiServiceImpl implements SlackApiService {
 
-    SlackApi slackApi;
+    private SlackApi slackApi;
 
     public SlackApiServiceImpl(SlackApi slackApi) {
         this.slackApi = slackApi;
