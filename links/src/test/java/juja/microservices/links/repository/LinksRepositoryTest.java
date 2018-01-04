@@ -52,7 +52,7 @@ public class LinksRepositoryTest {
     }
 
     @Test
-    public void getAllLinksWhenOneLinkMarkedDeletedExecutedCorrectly() {
+    public void getAllActiveLinksWhenOneLinkMarkedDeletedExecutedCorrectly() {
         //given
         List<Link> originalData = Arrays.asList(
                 new Link("1", "www.test1.com", false),
@@ -65,14 +65,14 @@ public class LinksRepositoryTest {
                 new Link("2", "www.test2.net", false));
 
         //when
-        List<Link> actual = linksRepository.getAllLinks();
+        List<Link> actual = linksRepository.getAllActiveLinks();
 
         //then
         assertThat(actual, IsIterableContainingInAnyOrder.containsInAnyOrder(expected.toArray()));
     }
 
     @Test
-    public void getAllLinksWhenAllLinksMarkedDeletedReturnsEmptyList() {
+    public void getAllActiveLinksWhenAllLinksMarkedDeletedReturnsEmptyList() {
         //given
         List<Link> originalData = Arrays.asList(
                 new Link("1", "www.test1.com", true),
@@ -81,16 +81,16 @@ public class LinksRepositoryTest {
         mongoTemplate.insert(originalData, "links");
 
         //when
-        List<Link> actual = linksRepository.getAllLinks();
+        List<Link> actual = linksRepository.getAllActiveLinks();
 
         //then
         assertTrue(actual.equals(new ArrayList<>()));
     }
 
     @Test
-    public void getAllLinksWhenDbIsEmptyReturnsEmptyList() {
+    public void getAllActiveLinksWhenDbIsEmptyReturnsEmptyList() {
         //when
-        List<Link> actual = linksRepository.getAllLinks();
+        List<Link> actual = linksRepository.getAllActiveLinks();
 
         //then
         assertTrue(actual.equals(new ArrayList<>()));
