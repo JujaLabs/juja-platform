@@ -24,12 +24,12 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SlackApiImplTest {
+public class SlackApiClientImplTest {
 
     @Inject
     private RestTemplate restTemplate;
     @Inject
-    private SlackApi slackApi;
+    private SlackApiClient slackApiClient;
     private MockRestServiceServer mockServer;
     @Value("${slack.api.token}")
     private String slackApiToken;
@@ -54,7 +54,7 @@ public class SlackApiImplTest {
                .andExpect(method(HttpMethod.GET))
                .andRespond(withSuccess(Util.readStringFromFile("api/channels.json"), MediaType.APPLICATION_JSON));
 
-        List<ChannelDTO> result = slackApi.receiveChannelsList();
+        List<ChannelDTO> result = slackApiClient.receiveChannelsList();
 
         assertEquals(expectedChannels, result);
     }

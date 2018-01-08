@@ -14,7 +14,7 @@ import java.util.List;
 
 @Repository
 @Slf4j
-public class SlackApiImpl implements SlackApi {
+public class SlackApiClientImpl implements SlackApiClient {
 
     private final RestTemplate restTemplate;
 
@@ -23,7 +23,7 @@ public class SlackApiImpl implements SlackApi {
     @Value("${slack.api.channels.urltemplate}")
     private String slackApiChannelsUrlTemplate;
 
-    public SlackApiImpl(RestTemplate restTemplate) {
+    public SlackApiClientImpl(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
