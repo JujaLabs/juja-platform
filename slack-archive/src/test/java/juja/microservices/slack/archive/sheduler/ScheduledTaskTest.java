@@ -1,8 +1,8 @@
 package juja.microservices.slack.archive.sheduler;
 
 import juja.microservices.slack.archive.model.dto.ChannelDTO;
-import juja.microservices.slack.archive.service.ArchiveService;
-import juja.microservices.slack.archive.service.SlackApiService;
+import juja.microservices.slack.archive.service.ChannelService;
+import juja.microservices.slack.archive.service.SlackApiClientService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,10 +23,10 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 public class ScheduledTaskTest {
 
     @Mock
-    private SlackApiService slackApiService;
+    private SlackApiClientService slackApiClientService;
 
     @Mock
-    private ArchiveService archiveService;
+    private ChannelService channelService;
 
     @Captor
     private ArgumentCaptor<List<ChannelDTO>> channelsDTOCaptor;
@@ -35,7 +35,7 @@ public class ScheduledTaskTest {
 
     @Before
     public void setUp() throws Exception {
-        scheduledTask = new ScheduledTask(slackApiService, archiveService);
+        scheduledTask = new ScheduledTask(slackApiClientService, channelService);
     }
 
     @Test
@@ -45,12 +45,12 @@ public class ScheduledTaskTest {
         channelsDTO.add(new ChannelDTO("CHANONEID", "flood"));
         channelsDTO.add(new ChannelDTO("CHANTWOID", "feedback"));
 
-        when(slackApiService.receiveChannels()).thenReturn(channelsDTO);
+        when(slackApiClientService.receiveChannels()).thenReturn(channelsDTO);
 
         scheduledTask.scheduleTaskWithFixedRate();
 
-        verify(archiveService, times(1)).saveChannels(channelsDTOCaptor.capture());
-        verify(slackApiService, times(1)).receiveChannels();
+        verify(channelService, times(1)).saveChannels(channelsDTOCaptor.capture());
+        verify(slackApiClientService, times(1)).receiveChannels();
         assertEquals(channelsDTO, channelsDTOCaptor.getValue());
     }
 

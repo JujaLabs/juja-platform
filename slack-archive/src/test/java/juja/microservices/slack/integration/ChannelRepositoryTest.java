@@ -2,7 +2,7 @@ package juja.microservices.slack.integration;
 
 import com.lordofthejars.nosqlunit.annotation.UsingDataSet;
 import juja.microservices.slack.archive.model.entity.Channel;
-import juja.microservices.slack.archive.repository.impl.ArchiveRepositoryImpl;
+import juja.microservices.slack.archive.repository.impl.ChannelRepositoryImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -16,10 +16,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
-public class ArchiveRepositoryTest extends BaseIntegrationTest {
+public class ChannelRepositoryTest extends BaseIntegrationTest {
 
     @Inject
-    private ArchiveRepositoryImpl repository;
+    private ChannelRepositoryImpl repository;
 
     @Test
     @UsingDataSet(locations = "/datasets/channels.json")
@@ -119,6 +119,4 @@ public class ArchiveRepositoryTest extends BaseIntegrationTest {
                 .filter(channel -> channel.getChannelName().equals(channelName))
                 .collect(Collectors.toList());
     }
-
-
 }

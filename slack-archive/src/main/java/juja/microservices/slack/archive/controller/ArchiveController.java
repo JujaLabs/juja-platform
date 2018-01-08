@@ -2,7 +2,7 @@ package juja.microservices.slack.archive.controller;
 
 import juja.microservices.slack.archive.model.dto.ChannelDTO;
 import juja.microservices.slack.archive.model.dto.MessagesRequest;
-import juja.microservices.slack.archive.service.ArchiveService;
+import juja.microservices.slack.archive.service.ChannelService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +27,7 @@ import java.util.List;
 public class ArchiveController {
 
     @Inject
-    private ArchiveService service;
+    private ChannelService service;
 
     @PostMapping(value = "/messages/", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public void archiveSlackMessage(@RequestParam("token") String token,

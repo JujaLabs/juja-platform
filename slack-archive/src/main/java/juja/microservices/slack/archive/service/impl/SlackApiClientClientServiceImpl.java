@@ -2,17 +2,17 @@ package juja.microservices.slack.archive.service.impl;
 
 import juja.microservices.slack.archive.model.dto.ChannelDTO;
 import juja.microservices.slack.archive.api.SlackApiClient;
-import juja.microservices.slack.archive.service.SlackApiService;
+import juja.microservices.slack.archive.service.SlackApiClientService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class SlackApiServiceImpl implements SlackApiService {
+public class SlackApiClientClientServiceImpl implements SlackApiClientService {
 
     private SlackApiClient slackApiClient;
 
-    public SlackApiServiceImpl(SlackApiClient slackApiClient) {
+    public SlackApiClientClientServiceImpl(SlackApiClient slackApiClient) {
         this.slackApiClient = slackApiClient;
     }
 
