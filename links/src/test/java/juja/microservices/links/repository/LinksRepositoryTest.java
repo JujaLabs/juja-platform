@@ -52,7 +52,7 @@ public class LinksRepositoryTest {
     }
 
     @Test
-    public void getAllActiveLinksWhenOneLinkMarkedDeletedExecutedCorrectly() {
+    public void getAllActiveLinksWhenOneLinkMarkedArchivedExecutedCorrectly() {
         //given
         List<Link> originalData = Arrays.asList(
                 new Link("1", "www.test1.com", false),
@@ -72,7 +72,7 @@ public class LinksRepositoryTest {
     }
 
     @Test
-    public void getAllActiveLinksWhenAllLinksMarkedDeletedReturnsEmptyList() {
+    public void getAllActiveLinksWhenAllLinksMarkedArchivedReturnsEmptyList() {
         //given
         List<Link> originalData = Arrays.asList(
                 new Link("1", "www.test1.com", true),

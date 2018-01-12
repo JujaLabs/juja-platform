@@ -17,7 +17,7 @@ public class Link {
     @NotEmpty
     private String url;
 
-    private boolean deleted;
+    private boolean archived;
 
     public Link(String url) {
         this.url = url;

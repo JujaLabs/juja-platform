@@ -52,9 +52,9 @@ public class LinksRepositoryImpl implements LinksRepository {
     @Override
     public List<Link> getAllActiveLinks() {
         Query query = new Query();
-        query.addCriteria(Criteria.where("deleted").is(false));
+        query.addCriteria(Criteria.where("archived").is(false));
         List<Link> result = mongoTemplate.find(query, Link.class, mongoCollectionName);
-        log.info("Found {} links in database", result);
+        log.info("Found active {} links in database", result);
         return result;
     }
 }
