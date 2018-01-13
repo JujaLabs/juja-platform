@@ -6,6 +6,8 @@ import juja.microservices.links.repository.LinksRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -33,10 +35,8 @@ public class LinksRepositoryImpl implements LinksRepository {
     @Override
     public Link saveLink(String url) {
         Link link = new Link(url);
-
         mongoTemplate.save(link, mongoCollectionName);
-        log.info("Successfully saved link {}.", link.toString());
-
+        log.info("Successfully saved link {}.", link);
         return link;
     }
 
@@ -50,7 +50,11 @@ public class LinksRepositoryImpl implements LinksRepository {
     }
 
     @Override
-    public List<Link> getAllLinks() {
-        return mongoTemplate.findAll(Link.class, mongoCollectionName);
+    public List<Link> getAllActiveLinks() {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("archived").is(false));
+        List<Link> result = mongoTemplate.find(query, Link.class, mongoCollectionName);
+        log.info("Found active {} links in database", result);
+        return result;
     }
 }
