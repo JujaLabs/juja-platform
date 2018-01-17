@@ -44,7 +44,7 @@ public class ChannelRepositoryTest extends BaseIntegrationTest {
         List<Channel> channels = new ArrayList<>();
         channels.add(channelForSave);
 
-        repository.saveOrUpdateChannels(channels);
+        repository.saveRawChannels(channels);
 
         List<Channel> actualChannelList = repository.getChannels();
 
@@ -67,7 +67,7 @@ public class ChannelRepositoryTest extends BaseIntegrationTest {
         channels.add(channelForSave1);
         channels.add(channelForSave2);
 
-        repository.saveOrUpdateChannels(channels);
+        repository.saveRawChannels(channels);
 
         List<Channel> actualChannelList = repository.getChannels();
 
@@ -87,7 +87,7 @@ public class ChannelRepositoryTest extends BaseIntegrationTest {
         List<Channel> channels = new ArrayList<>();
         channels.add(channelForSave1);
 
-        repository.saveOrUpdateChannels(channels);
+        repository.saveRawChannels(channels);
 
         List<Channel> actualChannelList = repository.getChannels();
 
@@ -106,7 +106,7 @@ public class ChannelRepositoryTest extends BaseIntegrationTest {
         List<Channel> channels = new ArrayList<>();
         channels.add(channelForSave1);
 
-        repository.saveOrUpdateChannels(channels);
+        repository.saveRawChannels(channels);
 
         List<Channel> actualChannelList = repository.getChannels();
 

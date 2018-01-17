@@ -58,9 +58,9 @@ public class ChannelServiceTest {
         expected.add(new Channel("CHANONEID", "flood"));
         expected.add(new Channel("CHANTWOID", "feedback"));
 
-        service.saveChannels(channelsDTO);
+        service.saveRawChannels(channelsDTO);
 
-        verify(repository).saveOrUpdateChannels(channelsCaptor.capture());
+        verify(repository).saveRawChannels(channelsCaptor.capture());
 
         assertEquals(expected, channelsCaptor.getValue());
         verifyNoMoreInteractions(repository);

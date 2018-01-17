@@ -2,6 +2,7 @@ package juja.microservices.slack.archive.service.impl;
 
 import juja.microservices.slack.archive.model.entity.Channel;
 import juja.microservices.slack.archive.model.dto.ChannelDTO;
+import juja.microservices.slack.archive.model.entity.RawChannel;
 import juja.microservices.slack.archive.repository.ChannelRepository;
 import juja.microservices.slack.archive.service.ChannelService;
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +24,8 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public void saveChannels(List<ChannelDTO> channelsDTO) {
-        repository.saveOrUpdateChannels(channelsDTO.stream()
-                .map(channelDTO -> convertChannelDTOToChannel(channelDTO))
-                .collect(Collectors.toList()));
+    public void saveRawChannels(List<RawChannel> channels) {
+        repository.saveRawChannels(channels);
     }
 
     @Override

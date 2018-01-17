@@ -2,7 +2,6 @@ package juja.microservices.slack.archive.sheduler;
 
 import juja.microservices.slack.archive.model.dto.ChannelDTO;
 import juja.microservices.slack.archive.service.ChannelService;
-import juja.microservices.slack.archive.service.SlackApiClientService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,12 +44,12 @@ public class ScheduledTaskTest {
         channelsDTO.add(new ChannelDTO("CHANONEID", "flood"));
         channelsDTO.add(new ChannelDTO("CHANTWOID", "feedback"));
 
-        when(slackApiClientService.receiveChannels()).thenReturn(channelsDTO);
+        when(slackApiClientService.receiveRawChannels()).thenReturn(channelsDTO);
 
         scheduledTask.scheduleTaskWithFixedRate();
 
-        verify(channelService, times(1)).saveChannels(channelsDTOCaptor.capture());
-        verify(slackApiClientService, times(1)).receiveChannels();
+        verify(channelService, times(1)).saveRawChannels(channelsDTOCaptor.capture());
+        verify(slackApiClientService, times(1)).receiveRawChannels();
         assertEquals(channelsDTO, channelsDTOCaptor.getValue());
     }
 

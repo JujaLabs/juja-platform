@@ -54,7 +54,7 @@ public class SlackApiClientImplTest {
                .andExpect(method(HttpMethod.GET))
                .andRespond(withSuccess(Util.readStringFromFile("api/channels.json"), MediaType.APPLICATION_JSON));
 
-        List<ChannelDTO> result = slackApiClient.receiveChannelsList();
+        List<ChannelDTO> result = slackApiClient.receiveRawChannelsList();
 
         assertEquals(expectedChannels, result);
     }

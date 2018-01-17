@@ -1,10 +1,10 @@
 package juja.microservices.slack.archive.api;
 
-import juja.microservices.slack.archive.model.dto.ChannelDTO;
+import juja.microservices.slack.archive.model.entity.RawChannel;
 
 import java.util.List;
 
 public interface SlackApiClient {
 
-    List<ChannelDTO> receiveChannelsList();
+    List<RawChannel> receiveRawChannelsList();
 }
