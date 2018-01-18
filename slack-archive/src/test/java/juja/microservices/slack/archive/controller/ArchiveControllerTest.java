@@ -1,7 +1,7 @@
 package juja.microservices.slack.archive.controller;
 
-import juja.microservices.slack.archive.model.ChannelDTO;
-import juja.microservices.slack.archive.service.ArchiveService;
+import juja.microservices.slack.archive.model.dto.ChannelDTO;
+import juja.microservices.slack.archive.service.ChannelService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -30,7 +30,7 @@ public class ArchiveControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private ArchiveService service;
+    private ChannelService service;
 
     @Test
     public void getChannelTest() throws Exception {

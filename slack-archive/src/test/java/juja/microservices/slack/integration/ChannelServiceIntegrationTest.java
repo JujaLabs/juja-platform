@@ -1,9 +1,9 @@
 package juja.microservices.slack.integration;
 
 import com.lordofthejars.nosqlunit.annotation.UsingDataSet;
-import juja.microservices.slack.archive.model.ChannelDTO;
-import juja.microservices.slack.archive.repository.impl.ArchiveRepositoryImpl;
-import juja.microservices.slack.archive.service.impl.ArchiveServiceImpl;
+import juja.microservices.slack.archive.model.dto.ChannelDTO;
+import juja.microservices.slack.archive.repository.impl.ChannelRepositoryImpl;
+import juja.microservices.slack.archive.service.impl.ChannelServiceImpl;
 import org.hamcrest.collection.IsIterableContainingInAnyOrder;
 import org.junit.Rule;
 import org.junit.Test;
@@ -19,16 +19,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
-public class ArchiveServiceIntegrationTest extends BaseIntegrationTest {
+public class ChannelServiceIntegrationTest extends BaseIntegrationTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
     @Inject
-    private ArchiveRepositoryImpl repository;
+    private ChannelRepositoryImpl repository;
 
     @Inject
-    private ArchiveServiceImpl service;
+    private ChannelServiceImpl service;
 
     @Test
     @UsingDataSet(locations = "/datasets/channels.json")
