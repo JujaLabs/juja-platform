@@ -1,6 +1,5 @@
 package juja.microservices.links.controller;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import juja.microservices.links.model.Link;
 import juja.microservices.links.model.SaveLinkRequest;
@@ -32,11 +31,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Ivan Shapovalov
  * @author Vladimir Zadorozhniy
  */
-//@ComponentScan(basePackages = {"juja.microservices.links.exception"})
 @RunWith(SpringRunner.class)
 @WebMvcTest(LinksController.class)
 public class LinksControllerTest {
-    private final String LINKS_URL = "/v1/links";
+    private static final String LINKS_URL = "/v1/links";
 
     @Inject
     private MockMvc mockMvc;
@@ -47,24 +45,25 @@ public class LinksControllerTest {
     public static String asJsonString(final Object obj) {
         try {
             final ObjectMapper mapper = new ObjectMapper();
-            final String jsonContent = mapper.writeValueAsString(obj);
-            return jsonContent;
+            return mapper.writeValueAsString(obj);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     @Test
-    public void saveLinkTest() throws Exception {
+    public void saveLink() throws Exception {
+        //given
         String url = "http://test.com";
         String id = "5a30508811d3b338a0b3f85c";
-        String owner = "a-user";
-        Link link = new Link(id, owner, url);
+        String owner = "owner";
+        Link link = new Link(id, owner, url, false);
         SaveLinkRequest request = new SaveLinkRequest(owner, url);
         String expected = asJsonString(link);
 
         when(linksService.saveLink(request)).thenReturn(link);
 
+        //when
         String actual = mockMvc.perform(post(LINKS_URL)
                 .content(asJsonString(request))
                 .contentType(APPLICATION_JSON_UTF8))
@@ -72,21 +71,28 @@ public class LinksControllerTest {
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andReturn().getResponse().getContentAsString();
 
+        //then
         assertEquals(expected, actual);
     }
 
     @Test
-    public void testGetAllLinks() throws Exception {
-        List<Link> expectedList = Arrays.asList(new Link("1", "www.test1.com"), new Link("2", "www.test2.net"));
-        when(linksService.getAllLinks()).thenReturn(expectedList);
+    public void getAllLinks() throws Exception {
+        //given
+        String owner = "owner";
+        List<Link> expected = Arrays.asList(
+                new Link(owner, "www.test1.com"),
+                new Link(owner, "www.test2.net"));
+        when(linksService.getAllLinks()).thenReturn(expected);
 
-        String result = mockMvc.perform(get(LINKS_URL)
+        //when
+        String actual = mockMvc.perform(get(LINKS_URL)
                 .contentType(APPLICATION_JSON_UTF8))
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        assertThatJson(result).when(Option.IGNORING_ARRAY_ORDER).isEqualTo(expectedList);
+        //then
+        assertThatJson(actual).when(Option.IGNORING_ARRAY_ORDER).isEqualTo(expected);
         verify(linksService).getAllLinks();
         verifyNoMoreInteractions(linksService);
     }

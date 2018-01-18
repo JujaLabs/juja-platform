@@ -6,11 +6,13 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @ApiModel
 @Getter
 @EqualsAndHashCode
+@ToString
 public class SaveLinkRequest {
     @NotEmpty
     @ApiModelProperty(value = "URL of the link to be saved", required = true)
@@ -25,8 +27,4 @@ public class SaveLinkRequest {
         this.url = url;
     }
 
-    @Override
-    public String toString() {
-        return String.format("Link[url='%s']", url);
-    }
 }
