@@ -27,24 +27,36 @@ import static org.junit.Assert.assertThat;
 public class LinksRepositoryTest {
 
     private static final String DB_NAME = "test-links";
+    private static final String COLLECTION_NAME ="links";
+    private MongoTemplate mongoTemplate;
+    private LinksRepository linksRepository;
+    private List<Link> expectedList;
     @ClassRule
     public static InMemoryMongoDb mongod = newInMemoryMongoDbRule().build();
     @Rule
     public MongoDbRule mongoRule = newMongoDbRule().defaultEmbeddedMongoDb(DB_NAME);
-    private List<Link> expectedList =
-            Arrays.asList(new Link("1", "www.test1.com"), new Link("2", "www.test2.net"));
-    private LinksRepository linksRepository;
 
     @Before
     public void setUp() {
-        MongoTemplate mongoTemplate = new MongoTemplate(mongoRule.getDatabaseOperation().connectionManager(), DB_NAME);
-        linksRepository = new LinksRepositoryImpl(mongoTemplate, "links");
-        mongoTemplate.insert(expectedList, "links");
+        expectedList = Arrays.asList(
+                new Link("5a60b8905662c03d58d85649", "www.test1.com", "1", false),
+                new Link("5a60b8905662c03d58d85644","www.test2.net", "2", true));
+        mongoTemplate = new MongoTemplate(mongoRule.getDatabaseOperation().connectionManager(), DB_NAME);
+        mongoTemplate.dropCollection(COLLECTION_NAME);
+        linksRepository = new LinksRepositoryImpl(mongoTemplate, COLLECTION_NAME);
     }
 
     @Test
     public void testGetAllLinks() {
+        mongoTemplate.insert(expectedList, COLLECTION_NAME);
         List<Link> result = linksRepository.getAllLinks();
+        assertThat(result, IsIterableContainingInAnyOrder.containsInAnyOrder(expectedList.toArray()));
+    }
+
+    @Test
+    public void testSaveLink() {
+        expectedList.forEach(linksRepository::saveLink);
+        List<Link> result = mongoTemplate.findAll(Link.class, COLLECTION_NAME);
         assertThat(result, IsIterableContainingInAnyOrder.containsInAnyOrder(expectedList.toArray()));
     }
 }

@@ -25,7 +25,7 @@ public class LinksRepositoryTest extends BaseIntegrationTest {
     public void saveNewLinkTest() {
         String url = "http://test.com";
         String owner = "a-user";
-        Link result = repository.saveLink(owner, url);
+        Link result = repository.saveLink(new Link(url, owner));
 
         assertNotNull(result);
         assertThat(result.getId(), not(isEmptyString()));

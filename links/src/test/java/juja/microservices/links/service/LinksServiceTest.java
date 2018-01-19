@@ -1,6 +1,6 @@
 package juja.microservices.links.service;
 
-import juja.microservices.links.exception.NotFoundException;
+import juja.microservices.links.exception.LinkAlreadyExistsException;
 import juja.microservices.links.model.Link;
 import juja.microservices.links.model.SaveLinkRequest;
 import juja.microservices.links.repository.LinksRepository;
@@ -25,6 +25,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author Ivan Shapovalov
  * @author Vladimir Zadorozhniy
+ * @author Ben Novikov
  */
 
 @RunWith(MockitoJUnitRunner.class)
@@ -35,6 +36,12 @@ public class LinksServiceTest {
     @Mock
     private LinksRepository linksRepository;
 
+    private final String url = "http://test.com";
+    private final String id = "5a30508811d3b338a0b3f85c";
+    private final String owner = "a-user";
+    private final Link expected = new Link(id, url, owner, false);
+    private final SaveLinkRequest request = new SaveLinkRequest(url, owner);
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -42,44 +49,55 @@ public class LinksServiceTest {
     }
 
     @Test
-    public void saveNewLinkTest() throws Exception {
-        String url = "http://test.com";
-        String id = "5a30508811d3b338a0b3f85c";
-        String owner = "a-user";
-        Link expected = new Link(id, owner, url);
-        SaveLinkRequest request = new SaveLinkRequest(owner, url);
+    public void saveNewLinkTest() {
+        Link saveLink = new Link(url, owner);
 
-        when(linksRepository.getLinkByURL(owner, url)).thenThrow(new NotFoundException(""));
-        when(linksRepository.saveLink(owner, url)).thenReturn(expected);
+        when(linksRepository.getLinkByURL(url)).thenReturn(null);
+        when(linksRepository.saveLink(saveLink)).thenReturn(expected);
 
         Link actual = linksService.saveLink(request);
 
         assertEquals(expected, actual);
-        verify(linksRepository).saveLink(owner, url);
-        verify(linksRepository).getLinkByURL(owner, url);
+        verify(linksRepository).getLinkByURL(url);
+        verify(linksRepository).saveLink(saveLink);
         verifyNoMoreInteractions(linksRepository);
     }
 
     @Test
-    public void saveExistingLinkTest() throws Exception {
-        String url = "http://test.com";
-        String id = "5a30508811d3b338a0b3f85c";
-        String owner = "a-user";
-        Link expected = new Link(id, owner, url);
-        SaveLinkRequest request = new SaveLinkRequest(owner, url);
+    public void saveWhenExistsHiddenLinkTest() {
+        Link saveLink = new Link(id, url, owner, false);
+        expected.setHidden(true);
 
-        when(linksRepository.getLinkByURL(owner, url)).thenReturn(expected);
+        when(linksRepository.getLinkByURL(url)).thenReturn(expected);
+        when(linksRepository.saveLink(saveLink)).thenReturn(expected);
 
         Link actual = linksService.saveLink(request);
 
         assertEquals(expected, actual);
-        verify(linksRepository).getLinkByURL(owner, url);
+        verify(linksRepository).getLinkByURL(url);
+        verify(linksRepository).saveLink(saveLink);
+        verifyNoMoreInteractions(linksRepository);
+    }
+
+    @Test
+    public void saveWhenExistsNotHiddenLinkTest() {
+        expectedException.expect(LinkAlreadyExistsException.class);
+        expected.setHidden(false);
+
+        when(linksRepository.getLinkByURL(url)).thenReturn(expected);
+
+        Link actual = linksService.saveLink(request);
+
+        assertEquals(expected, actual);
+        verify(linksRepository).getLinkByURL(url);
         verifyNoMoreInteractions(linksRepository);
     }
 
     @Test
     public void testGetAllLinks() {
-        List<Link> expectedList = Arrays.asList(new Link("1", "www.test1.com"), new Link("2", "www.test2.net"));
+        List<Link> expectedList = Arrays.asList(
+                new Link("www.test1.com", "1"),
+                new Link("www.test2.net", "2"));
         when(linksRepository.getAllLinks()).thenReturn(expectedList);
         List<Link> result = linksService.getAllLinks();
         assertEquals(result, expectedList);

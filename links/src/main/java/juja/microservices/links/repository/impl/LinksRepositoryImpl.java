@@ -1,6 +1,5 @@
 package juja.microservices.links.repository.impl;
 
-import juja.microservices.links.exception.NotFoundException;
 import juja.microservices.links.model.Link;
 import juja.microservices.links.repository.LinksRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +14,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 /**
  * @author Ivan Shapovalov
- * @author Vladimid Zadorozhniy
+ * @author Vladimir Zadorozhniy
  */
 @Slf4j
 @Repository
@@ -31,9 +30,7 @@ public class LinksRepositoryImpl implements LinksRepository {
     }
 
     @Override
-    public Link saveLink(String url, String owner) {
-        Link link = new Link(owner, url);
-
+    public Link saveLink(Link link) {
         mongoTemplate.save(link, mongoCollectionName);
         log.info("Successfully saved link {}.", link.toString());
 
@@ -41,13 +38,18 @@ public class LinksRepositoryImpl implements LinksRepository {
     }
 
     @Override
-    public Link getLinkByURL(String owner, String url) throws NotFoundException {
-        Link link = mongoTemplate.findOne(query(where("owner").is(owner).and("url").is(url)),
+    public Link getLinkByURL(String url) {
+        Link link = mongoTemplate.findOne(query(where("url").is(url)),
                 Link.class, mongoCollectionName);
-        if (link == null) {
-            throw new NotFoundException(String.format("Not found link with url: [%s] which belongs to [%s].",
-                    url, owner));
-        }
+
+        return link;
+    }
+
+    @Override
+    public Link getLinkByURLAndOwner(String url, String owner) {
+        Link link = mongoTemplate.findOne(query(where("url").is(url).and("owner").is(owner)),
+                Link.class, mongoCollectionName);
+
         return link;
     }
 
