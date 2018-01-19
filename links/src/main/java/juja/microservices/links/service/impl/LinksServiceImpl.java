@@ -1,5 +1,6 @@
 package juja.microservices.links.service.impl;
 
+import juja.microservices.links.exception.LinkAlreadyExistsException;
 import juja.microservices.links.model.Link;
 import juja.microservices.links.model.SaveLinkRequest;
 import juja.microservices.links.repository.LinksRepository;
@@ -22,7 +23,7 @@ public class LinksServiceImpl implements LinksService {
     private LinksRepository linksRepository;
 
     @Override
-    public Link saveLink(SaveLinkRequest request) {
+    public Link saveLink(SaveLinkRequest request) throws LinkAlreadyExistsException {
         Link link;
         String url = request.getUrl();
 
@@ -33,7 +34,9 @@ public class LinksServiceImpl implements LinksService {
                 linksRepository.saveLink(link);
                 log.info("Hidden link set visible (not hidden) {}. ", link.toString());
             } else {
-                log.info("Link already exists and it's not hidden {}. ", link.toString());
+                String message = "Link already exists and it's not hidden";
+                log.info("{} {}. ", message, link.toString());
+                throw new LinkAlreadyExistsException(message);
             }
         } else {
             link = linksRepository.saveLink(new Link(url, request.getOwner()));

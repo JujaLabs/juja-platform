@@ -1,5 +1,6 @@
 package juja.microservices.links.service;
 
+import juja.microservices.links.exception.LinkAlreadyExistsException;
 import juja.microservices.links.model.Link;
 import juja.microservices.links.model.SaveLinkRequest;
 import juja.microservices.links.repository.LinksRepository;
@@ -80,6 +81,7 @@ public class LinksServiceTest {
 
     @Test
     public void saveWhenExistsNotHiddenLinkTest() {
+        expectedException.expect(LinkAlreadyExistsException.class);
         expected.setHidden(false);
 
         when(linksRepository.getLinkByURL(url)).thenReturn(expected);
