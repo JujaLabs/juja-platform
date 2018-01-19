@@ -59,7 +59,7 @@ public class LinksControllerTest {
         String url = "http://test.com";
         String id = "5a30508811d3b338a0b3f85c";
         String owner = "a-user";
-        Link link = new Link(id, owner, url);
+        Link link = new Link(id, owner, url, false);
         SaveLinkRequest request = new SaveLinkRequest(owner, url);
         String expected = asJsonString(link);
 
