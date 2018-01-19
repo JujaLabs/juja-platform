@@ -16,17 +16,17 @@ public class SaveLinkRequest {
     @ApiModelProperty(value = "URL of the link to be saved", required = true)
     private String url;
     @NotEmpty
-    @ApiModelProperty(value = "Person who saves the link", required = true)
+    @ApiModelProperty(value = "Person who saved the link", required = true)
     private String owner;
 
     @JsonCreator
-    public SaveLinkRequest(@JsonProperty("owner") String owner, @JsonProperty("url") String url) {
-        this.owner = owner;
+    public SaveLinkRequest(@JsonProperty("url") String url, @JsonProperty("owner") String owner) {
         this.url = url;
+        this.owner = owner;
     }
 
     @Override
     public String toString() {
-        return String.format("Link[url='%s']", url);
+        return String.format("Link[url='%s', owner='%s']", url, owner);
     }
 }

@@ -3,18 +3,14 @@ package juja.microservices.links.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 
 @ApiModel
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
-@EqualsAndHashCode
 @NoArgsConstructor
 public class Link {
     @Id
@@ -26,7 +22,10 @@ public class Link {
     @NotEmpty
     @ApiModelProperty(value = "Owner of the link", required = true)
     private String owner;
+    @ApiModelProperty(value = "Flag that means the link is hidden or not", required = false)
+    private boolean hidden;
 
+    //used to save to database, _id is auto generated, _hidden is false by default
     public Link(String url, String owner) {
         this.url = url;
         this.owner = owner;
@@ -34,6 +33,6 @@ public class Link {
 
     @Override
     public String toString() {
-        return String.format("Link[id='%s', owner='%s', url='%s']", id, owner, url);
+        return String.format("Link[id='%s', url='%s', owner='%s', hidden='%s']", id, url, owner, hidden);
     }
 }
