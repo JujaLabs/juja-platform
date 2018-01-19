@@ -22,7 +22,7 @@ public class Link {
     @NotEmpty
     @ApiModelProperty(value = "Owner of the link", required = true)
     private String owner;
-    @ApiModelProperty(value = "Flag that means the link is hidden or not", required = false)
+    @ApiModelProperty(value = "Flag that means the link is hidden or not", required = false, allowEmptyValue = true)
     private boolean hidden;
 
     //used to save to database, _id is auto generated, _hidden is false by default
