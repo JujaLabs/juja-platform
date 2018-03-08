@@ -25,11 +25,16 @@ public class SlackRepositoryImpl implements SlackRepository {
     private static final String JSON_RESPONSE_NAME_HAS_MORE = "has_more";
     private static final String JSON_RESPONSE_NAME_ERROR = "error";
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
 
-    private static String slackApiMessagesUrlTemplate;
-    private static String slackApiToken;
+    @Value("${slack.api.messages.urltemplate}")
+    private  String slackApiMessagesUrlTemplate;
+    @Value("${slack.api.token}")
+    private  String slackApiToken;
 
+    public SlackRepositoryImpl(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     @Override
     public List<RawMessage> getRawMessages(String channelId, String ts) {
@@ -56,16 +61,6 @@ public class SlackRepositoryImpl implements SlackRepository {
             throw new ArchiveException(responseDocument.getString(JSON_RESPONSE_NAME_ERROR));
         }
         return result;
-    }
-
-    @Value("${slack.api.messages.urltemplate}")
-    private void setDatabase(String url) {
-        slackApiMessagesUrlTemplate = url;
-    }
-
-    @Value("${slack.api.token}")
-    private void setToken(String url) {
-        slackApiToken = url;
     }
 
     private Date getDateFromDocument(Document rawMessage) {
