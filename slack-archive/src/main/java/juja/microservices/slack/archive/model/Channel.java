@@ -11,10 +11,14 @@ public class Channel {
     private String id;
     private String channelId;
     private String channelName;
+    private String ts;
 
     @JsonCreator
-    public Channel(@JsonProperty("id") String channelId, @JsonProperty("name") String channelName) {
+    public Channel(@JsonProperty("id") String channelId,
+                   @JsonProperty("name") String channelName,
+                   @JsonProperty("ts") String ts) {
         this.channelId = channelId;
         this.channelName = channelName;
+        this.ts = ts;
     }
 }
