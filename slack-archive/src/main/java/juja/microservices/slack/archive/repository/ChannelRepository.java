@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ChannelRepository {
 
-    List<Channel> getChannel();
+    List<Channel> getChannels();
 
     void saveChannel(Channel channel);
 }
