@@ -2,35 +2,31 @@ package juja.microservices.slack.archive.repository.impl;
 
 import juja.microservices.slack.archive.exceptions.ArchiveException;
 import juja.microservices.slack.archive.model.RawMessage;
+import juja.microservices.slack.archive.model.RawMessageSlackResponse;
 import juja.microservices.slack.archive.repository.SlackRepository;
-import org.bson.Document;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @Repository
 public class SlackRepositoryImpl implements SlackRepository {
 
-    private static final String JSON_RESPONSE_NAME_OK = "ok";
-    private static final String JSON_RESPONSE_NAME_MESSAGES = "messages";
     private static final String JSON_RESPONSE_NAME_TS = "ts";
-    private static final String JSON_RESPONSE_NAME_HAS_MORE = "has_more";
-    private static final String JSON_RESPONSE_NAME_ERROR = "error";
 
     private final RestTemplate restTemplate;
 
     @Value("${slack.api.messages.urltemplate}")
-    private  String slackApiMessagesUrlTemplate;
+    private String slackApiMessagesUrlTemplate;
     @Value("${slack.api.token}")
-    private  String slackApiToken;
+    private String slackApiToken;
 
     public SlackRepositoryImpl(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
@@ -39,39 +35,38 @@ public class SlackRepositoryImpl implements SlackRepository {
     @Override
     public List<RawMessage> getRawMessages(String channelId, String ts) {
 
+        List<RawMessage> messages = new LinkedList<>();
         String url = String.format(slackApiMessagesUrlTemplate, slackApiToken, channelId, ts);
 
-        List<RawMessage> result = new LinkedList<>();
+        ResponseEntity<RawMessageSlackResponse> response =
+                restTemplate.getForEntity(url, RawMessageSlackResponse.class);
+        RawMessageSlackResponse slackResponse = response.getBody();
 
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-        Document responseDocument = Document.parse(response.getBody());
-
-        if (responseDocument.getBoolean(JSON_RESPONSE_NAME_OK)) {
-            List<Document> listMessages = (List<Document>) responseDocument.get(JSON_RESPONSE_NAME_MESSAGES);
+        if (slackResponse.getOk()) {
             do {
-                for (Document rawMessage : listMessages) {
-                    String id = rawMessage.getString(JSON_RESPONSE_NAME_TS);
-                    Date date = getDateFromDocument(rawMessage);
-                    Map<String, Object> rawMessagesContent = getMapRawMessageFromDocument(rawMessage);
-
-                    result.add(new RawMessage(id, rawMessagesContent, channelId, date));
+                List<Map<String, Object>> receivedMessages = slackResponse.getMessages();
+                for (Map<String, Object> messageContentMap : receivedMessages) {
+                    String id = getTimestampFromReceiveMessage(messageContentMap);
+                    Date date = getDateFromReceiveMessage(messageContentMap);
+                    messages.add(new RawMessage(id, messageContentMap, channelId, date));
                 }
-            } while (responseDocument.getBoolean(JSON_RESPONSE_NAME_HAS_MORE));
+            } while (slackResponse.getHasMore());
         } else {
-            throw new ArchiveException(responseDocument.getString(JSON_RESPONSE_NAME_ERROR));
+            throw new ArchiveException(slackResponse.getError());
         }
-        return result;
+        return sortRawMessageListByDate(messages);
     }
 
-    private Date getDateFromDocument(Document rawMessage) {
-        String timestamp = rawMessage.get(JSON_RESPONSE_NAME_TS).toString().replace(".000", "");
-        return new Date(Long.parseLong(timestamp));
+    private List<RawMessage> sortRawMessageListByDate(List<RawMessage> messages) {
+        return messages.stream().sorted(Comparator.comparing(RawMessage::getDate)).collect(Collectors.toList());
     }
 
-    private Map<String, Object> getMapRawMessageFromDocument(Document rawMessage) {
-        Map<String, Object> result = new HashMap<>();
-        Set<String> rawMessageObjectNames = rawMessage.keySet();
-        rawMessageObjectNames.forEach(key -> result.put(key, rawMessage.get(key)));
-        return result;
+    private Date getDateFromReceiveMessage(Map<String, Object> messageContentMap) {
+        String timestampInLongFormat = getTimestampFromReceiveMessage(messageContentMap).replace(".000", "");
+        return new Date(Long.parseLong(timestampInLongFormat));
+    }
+
+    private String getTimestampFromReceiveMessage(Map<String, Object> messageContentMap) {
+        return (String) messageContentMap.get(JSON_RESPONSE_NAME_TS);
     }
 }
