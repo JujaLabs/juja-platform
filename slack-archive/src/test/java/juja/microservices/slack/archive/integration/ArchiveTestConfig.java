@@ -1,4 +1,4 @@
-package juja.microservices.slack.integration;
+package juja.microservices.slack.archive.integration;
 
 import com.github.fakemongo.Fongo;
 import com.mongodb.MongoClient;

@@ -52,8 +52,8 @@ public class ArchiveServiceTest {
     @Test
     public void getChannelsTest() {
         List<Channel> channels = new ArrayList<>();
-        channels.add(new Channel("CHANONEID", "flood"));
-        channels.add(new Channel("CHANTWOID", "feedback"));
+       // channels.add(new Channel("CHANONEID", "flood"));
+      //  channels.add(new Channel("CHANTWOID", "feedback"));
 
         List<ChannelDTO> expected = new ArrayList<>();
         expected.add(new ChannelDTO("CHANONEID", "flood"));

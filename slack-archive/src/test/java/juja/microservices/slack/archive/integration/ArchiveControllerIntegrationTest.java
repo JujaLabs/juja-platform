@@ -1,4 +1,4 @@
-package juja.microservices.slack.integration;
+package juja.microservices.slack.archive.integration;
 
 import com.lordofthejars.nosqlunit.annotation.UsingDataSet;
 import org.junit.Before;

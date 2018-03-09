@@ -1,4 +1,4 @@
-package juja.microservices.slack.integration;
+package juja.microservices.slack.archive.integration;
 
 import com.github.fakemongo.Fongo;
 import com.lordofthejars.nosqlunit.mongodb.MongoDbConfiguration;
@@ -13,7 +13,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.inject.Inject;
 
-import static juja.microservices.slack.integration.ArchiveTestConfig.TEST_DATABASE_NAME;
+import static juja.microservices.slack.archive.integration.ArchiveTestConfig.TEST_DATABASE_NAME;
 
 /**
  * @author danil.kuznetsov
