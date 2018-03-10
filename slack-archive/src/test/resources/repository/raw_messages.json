@@ -1,0 +1,20 @@
+{
+  "ok": true,
+  "oldest": "1513275104.000059",
+  "messages": [
+    {
+      "type": "message",
+      "user": "U8ET8QQQQ",
+      "text": "last message",
+      "ts": "1520599268.000174"
+    },
+    {
+      "type": "message",
+      "user": "U8ET8UJ0L",
+      "text": "first message",
+      "ts": "1517498771.000708"
+    }
+  ],
+  "has_more": false,
+  "pin_count": 0
+}

@@ -40,7 +40,7 @@ public class ArchiveServiceImpl implements ArchiveService {
     }
 
     private ChannelDTO convertChannelToChannelDTO(Channel channel) {
-        return new ChannelDTO(channel.getChannelId(), channel.getChannelName());
+        return new ChannelDTO(channel.getChannelId(), channel.getChannelName(), channel.getChannelTs());
     }
 
     @Override

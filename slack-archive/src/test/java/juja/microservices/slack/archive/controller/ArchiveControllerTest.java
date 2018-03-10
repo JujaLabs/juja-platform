@@ -35,11 +35,12 @@ public class ArchiveControllerTest {
     @Test
     public void getChannelTest() throws Exception {
         List<ChannelDTO> channels = Arrays.asList(
-                new ChannelDTO("CHANONEID", "flood"),
-                new ChannelDTO("CHANTWOID", "feedback")
+                new ChannelDTO("CHANONEID", "flood", "9876543219.000321"),
+                new ChannelDTO("CHANTWOID", "feedback", "1234567891.000123")
         );
 
-        String expected = "[{\"id\":\"CHANONEID\",\"name\":\"flood\"},{\"id\":\"CHANTWOID\",\"name\":\"feedback\"}]";
+        String expected = "[{\"id\":\"CHANONEID\",\"name\":\"flood\",\"ts\":\"9876543219.000321\"}," +
+                "{\"id\":\"CHANTWOID\",\"name\":\"feedback\",\"ts\":\"1234567891.000123\"}]";
 
         when(service.getChannels()).thenReturn(channels);
 

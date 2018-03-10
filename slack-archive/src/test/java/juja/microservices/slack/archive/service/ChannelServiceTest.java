@@ -1,14 +1,15 @@
 package juja.microservices.slack.archive.service;
 
 import juja.microservices.slack.archive.model.Channel;
-import juja.microservices.slack.archive.model.ChannelDTO;
-import juja.microservices.slack.archive.repository.ArchiveRepository;
-import juja.microservices.slack.archive.service.impl.ArchiveServiceImpl;
+import juja.microservices.slack.archive.repository.ChannelRepository;
+import juja.microservices.slack.archive.service.impl.ChannelServiceImpl;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -23,20 +24,23 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ArchiveServiceTest {
+public class ChannelServiceTest {
 
-    private ArchiveService service;
+    private ChannelService service;
 
     @Rule
     final public ExpectedException expectedException = ExpectedException.none();
 
     @Mock
-    private ArchiveRepository repository;
+    private ChannelRepository repository;
+
+    @Captor
+    private ArgumentCaptor<Channel> channelsCaptor;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        service = new ArchiveServiceImpl(repository);
+        service = new ChannelServiceImpl(repository);
     }
 
     @Test
@@ -45,26 +49,35 @@ public class ArchiveServiceTest {
     }
 
     @Test
-    public void saveMessageTest() {
-        //TODO Should be implemented
-    }
-
-    @Test
-    public void getChannelsTest() {
+    public void getChannelsTest(){
         List<Channel> channels = new ArrayList<>();
         channels.add(new Channel("CHANONEID", "flood", "9876543219.000321"));
         channels.add(new Channel("CHANTWOID", "feedback", "1234567891.000123"));
 
-        List<ChannelDTO> expected = new ArrayList<>();
-        expected.add(new ChannelDTO("CHANONEID", "flood", "9876543219.000321"));
-        expected.add(new ChannelDTO("CHANTWOID", "feedback", "1234567891.000123"));
+        List<Channel> expected = new ArrayList<>();
+        expected.add(new Channel("CHANONEID", "flood", "9876543219.000321"));
+        expected.add(new Channel("CHANTWOID", "feedback", "1234567891.000123"));
 
         when(repository.getChannels()).thenReturn(channels);
 
-        List<ChannelDTO> actual = service.getChannels();
+        List<Channel> actual = service.getChannels();
 
         assertEquals(expected, actual);
         verify(repository).getChannels();
+        verifyNoMoreInteractions(repository);
+    }
+
+    @Test
+    public void saveChannelTest(){
+        Channel channel = new Channel("CHANONEID", "flood", "9876543219.000321");
+
+        Channel expected = new Channel("CHANONEID", "flood", "9876543219.000321");
+
+        service.saveChannel(channel);
+
+        verify(repository).saveChannel(channelsCaptor.capture());
+
+        assertEquals(expected, channelsCaptor.getValue());
         verifyNoMoreInteractions(repository);
     }
 }
