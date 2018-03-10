@@ -2,10 +2,12 @@ package juja.microservices.slack.archive.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
 
 @Getter
+@EqualsAndHashCode
 public class Channel {
     @Id
     private String id;

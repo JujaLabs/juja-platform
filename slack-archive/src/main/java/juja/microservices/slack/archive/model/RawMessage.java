@@ -1,6 +1,7 @@
 package juja.microservices.slack.archive.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 @Getter
 @ToString
+@EqualsAndHashCode
 public class RawMessage {
 
     @Id
