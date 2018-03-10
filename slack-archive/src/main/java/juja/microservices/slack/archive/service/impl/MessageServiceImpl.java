@@ -14,18 +14,22 @@ import java.util.List;
 @Service
 public class MessageServiceImpl implements MessageService {
 
+    private final SlackService slackService;
+    private final MessageRepository messageRepository;
+    private final ChannelService channelService;
+
     @Inject
-    private SlackService slackService;
-    @Inject
-    private MessageRepository messageRepository;
-    @Inject
-    private ChannelService channelService;
+    public MessageServiceImpl(SlackService slackService, MessageRepository messageRepository, ChannelService channelService) {
+        this.slackService = slackService;
+        this.messageRepository = messageRepository;
+        this.channelService = channelService;
+    }
 
     @Override
     public void saveRawMessages() {
         List<Channel> channels = channelService.getChannels();
         for(Channel channel: channels){
-            List<RawMessage> messages = slackService.getRawMessage(channel.getChannelId(), channel.getTs());
+            List<RawMessage> messages = slackService.getRawMessage(channel.getChannelId(), channel.getChannelTs());
             messageRepository.saveRawMessages(messages);
             channelService.saveChannel(channel);
         }

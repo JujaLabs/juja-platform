@@ -13,8 +13,12 @@ import java.util.List;
 @Slf4j
 public class ChannelServiceImpl implements ChannelService {
 
+    private final ChannelRepository channelRepository;
+
     @Inject
-    private ChannelRepository channelRepository;
+    public ChannelServiceImpl(ChannelRepository channelRepository) {
+        this.channelRepository = channelRepository;
+    }
 
     @Override
     public List<Channel> getChannels() {

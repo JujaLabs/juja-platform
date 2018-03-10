@@ -14,14 +14,18 @@ import java.util.List;
 @Slf4j
 public class MessageRepositoryImpl implements MessageRepository {
 
-    @Inject
-    private MongoTemplate mongoTemplate;
+    private final MongoTemplate mongoTemplate;
 
     @Value("${spring.data.mongodb.raw.messages.collection")
     private String rawMessagesCollectionName;
 
+    @Inject
+    public MessageRepositoryImpl(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
+
     @Override
     public void saveRawMessages(List<RawMessage> messages) {
-        messages.forEach(rawMessage -> mongoTemplate.save(rawMessage));
+        messages.forEach(mongoTemplate::save);
     }
 }

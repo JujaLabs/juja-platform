@@ -13,8 +13,12 @@ import java.util.List;
 @Slf4j
 public class SlackServiceImpl implements SlackService {
 
+    private final SlackRepository slackRepository;
+
     @Inject
-    private SlackRepository slackRepository;
+    public SlackServiceImpl(SlackRepository slackRepository) {
+        this.slackRepository = slackRepository;
+    }
 
     @Override
     public List<RawMessage> getRawMessage(String channelId, String ts) {
