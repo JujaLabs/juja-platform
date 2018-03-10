@@ -1,12 +1,14 @@
 {
   "channels": [
     {
-      "channelId": "CHANIDONE",
-      "channelName": "flood"
+      "channelId" : "CHANIDONE",
+      "channelName" : "flood",
+      "channelTs" : "9876543219.000321"
     },
     {
-      "channelId": "CHANIDTWO",
-      "channelName": "feedback"
+      "channelId" : "CHANIDTWO",
+      "channelName" : "feedback",
+      "channelTs" : "1234567891.000123"
     }
-  ]
+    ]
 }
