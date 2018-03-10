@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface MessageRepository {
 
+    List<RawMessage> getRawMessages();
+
     void saveRawMessages(List<RawMessage> messages);
 }

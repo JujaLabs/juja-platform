@@ -25,7 +25,16 @@ public class MessageRepositoryImpl implements MessageRepository {
     }
 
     @Override
+    public List<RawMessage> getRawMessages() {
+        List<RawMessage> rawMessages = mongoTemplate.findAll(RawMessage.class, rawMessagesCollectionName);
+        if (rawMessages.isEmpty()) {
+            log.info("Raw_messages collection is empty");
+        }
+        return rawMessages;
+    }
+
+    @Override
     public void saveRawMessages(List<RawMessage> messages) {
-        messages.forEach(mongoTemplate::save);
+        messages.forEach(message -> mongoTemplate.save(message, rawMessagesCollectionName));
     }
 }
