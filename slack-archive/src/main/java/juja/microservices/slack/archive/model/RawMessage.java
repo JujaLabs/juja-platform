@@ -1,23 +1,16 @@
 package juja.microservices.slack.archive.model;
 
-import lombok.EqualsAndHashCode;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
 import java.util.Map;
 
 @Getter
-@Setter
-@NoArgsConstructor
 @ToString
-@EqualsAndHashCode
-@Document
 public class RawMessage {
 
     @Id
@@ -27,7 +20,10 @@ public class RawMessage {
     private String channel;
     private Date date;
 
-    public RawMessage(String id, Map<String, Object> rawMessage, String channel, Date date) {
+    public RawMessage(@JsonProperty("_id") String id,
+                      @JsonProperty("rawMessage") Map<String, Object> rawMessage,
+                      @JsonProperty("channel") String channel,
+                      @JsonProperty("date") Date date) {
         this.id = id;
         this.rawMessage = rawMessage;
         this.channel = channel;
