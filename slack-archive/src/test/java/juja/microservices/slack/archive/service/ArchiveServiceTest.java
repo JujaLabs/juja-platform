@@ -52,12 +52,12 @@ public class ArchiveServiceTest {
     @Test
     public void getChannelsTest() {
         List<Channel> channels = new ArrayList<>();
-       // channels.add(new Channel("CHANONEID", "flood"));
-      //  channels.add(new Channel("CHANTWOID", "feedback"));
+        channels.add(new Channel("CHANONEID", "flood", "9876543219.000321"));
+        channels.add(new Channel("CHANTWOID", "feedback", "1234567891.000123"));
 
         List<ChannelDTO> expected = new ArrayList<>();
-        expected.add(new ChannelDTO("CHANONEID", "flood"));
-        expected.add(new ChannelDTO("CHANTWOID", "feedback"));
+        expected.add(new ChannelDTO("CHANONEID", "flood", "9876543219.000321"));
+        expected.add(new ChannelDTO("CHANTWOID", "feedback", "1234567891.000123"));
 
         when(repository.getChannels()).thenReturn(channels);
 

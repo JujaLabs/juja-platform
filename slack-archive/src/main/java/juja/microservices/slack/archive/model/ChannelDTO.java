@@ -9,9 +9,12 @@ public class ChannelDTO {
     private String id;
     @JsonProperty
     private String name;
+    @JsonProperty
+    private String ts;
 
-    public ChannelDTO(String id, String name) {
+    public ChannelDTO(String id, String name, String ts) {
         this.id = id;
         this.name = name;
+        this.ts = ts;
     }
 }

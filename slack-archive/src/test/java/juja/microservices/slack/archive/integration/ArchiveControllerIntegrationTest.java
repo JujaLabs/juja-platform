@@ -29,7 +29,8 @@ public class ArchiveControllerIntegrationTest extends BaseIntegrationTest {
     @Test
     @UsingDataSet(locations = "/datasets/channels.json")
     public void getAllChannelsAndReturnJson() throws Exception {
-        String expected = "[{\"id\":\"CHANIDONE\",\"name\":\"flood\"},{\"id\":\"CHANIDTWO\",\"name\":\"feedback\"}]";
+        String expected = "[{\"id\":\"CHANIDONE\",\"name\":\"flood\",\"ts\":\"9876543219.000321\"}," +
+                "{\"id\":\"CHANIDTWO\",\"name\":\"feedback\",\"ts\":\"1234567891.000123\"}]";
 
         String result = mockMvc.perform(get(CHANNELS_URL)
                 .contentType(APPLICATION_JSON_UTF8))
