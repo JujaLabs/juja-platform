@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 
 @Getter
 @EqualsAndHashCode
+@ToString
 public class Channel {
     @Id
     private String id;

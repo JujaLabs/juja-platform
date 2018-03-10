@@ -35,6 +35,9 @@ public class MessageRepositoryImpl implements MessageRepository {
 
     @Override
     public void saveRawMessages(List<RawMessage> messages) {
-        messages.forEach(message -> mongoTemplate.save(message, rawMessagesCollectionName));
+        for (RawMessage rawMessage: messages){
+            mongoTemplate.save(rawMessage, rawMessagesCollectionName);
+            log.info("Added new raw message to database: " + rawMessage);
+        }
     }
 }

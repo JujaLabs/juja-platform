@@ -45,5 +45,6 @@ public class ChannelRepositoryImpl implements ChannelRepository {
         update.set("channelName", channel.getChannelName());
         update.set("channelTs", channel.getChannelTs());
         mongoTemplate.upsert(query, update, channelsCollectionName);
+        log.info("Added or update channel: " + channel);
     }
 }

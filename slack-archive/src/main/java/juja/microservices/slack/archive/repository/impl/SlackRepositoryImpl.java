@@ -4,6 +4,7 @@ import juja.microservices.slack.archive.exceptions.ArchiveException;
 import juja.microservices.slack.archive.model.RawMessage;
 import juja.microservices.slack.archive.model.RawMessageSlackResponse;
 import juja.microservices.slack.archive.repository.SlackRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Repository
+@Slf4j
 public class SlackRepositoryImpl implements SlackRepository {
 
     private static final String JSON_RESPONSE_NAME_TS = "ts";
@@ -52,8 +54,10 @@ public class SlackRepositoryImpl implements SlackRepository {
                 }
             } while (slackResponse.getHasMore());
         } else {
+            log.error("Problem with request: " + slackResponse.getError());
             throw new ArchiveException(slackResponse.getError());
         }
+        log.info("Got list of raw messages from channel: " + channelId + ", from this time: " + ts);
         return sortRawMessageListByDate(messages);
     }
 
